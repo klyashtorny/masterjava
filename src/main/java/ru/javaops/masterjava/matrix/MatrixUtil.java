@@ -3,7 +3,6 @@ package ru.javaops.masterjava.matrix;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 /**
@@ -18,9 +17,9 @@ public class MatrixUtil {
         final int[][] matrixC = new int[matrixSize][matrixSize];
 
         executor.submit(() -> IntStream.range(0, matrixSize)
-                        .parallel()
-                        .forEach(row -> multiplyMatrix(matrixA, matrixB, matrixSize, matrixC, row)))
-                 .get();
+                .parallel()
+                .forEach(row -> multiplyMatrix(matrixA, matrixB, matrixSize, matrixC, row)))
+                .get();
 
         return matrixC;
     }
@@ -47,6 +46,7 @@ public class MatrixUtil {
 
     /**
      * optimized multiply matrix
+     *
      * @param matrixA
      * @param matrixB
      * @return

@@ -3,6 +3,8 @@ package ru.javaops.masterjava.matrix;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.IntStream;
 
 /**
  * gkislin
@@ -15,8 +17,14 @@ public class MatrixUtil {
         final int matrixSize = matrixA.length;
         final int[][] matrixC = new int[matrixSize][matrixSize];
 
+        executor.submit(() -> IntStream.range(0, matrixSize)
+                        .parallel()
+                        .forEach(row -> multiplyMatrix(matrixA, matrixB, matrixSize, matrixC, row)))
+                 .get();
+
         return matrixC;
     }
+
 
     /*
      // TODO optimize by https://habrahabr.ru/post/114797/
@@ -46,25 +54,28 @@ public class MatrixUtil {
     public static int[][] singleThreadMultiply(int[][] matrixA, int[][] matrixB) {
         final int matrixSize = matrixA.length;
         final int[][] matrixC = new int[matrixSize][matrixSize];
-        final int bRows = matrixB.length;
 
-        int thatColumn[] = new int[bRows];
-
-        for (int j = 0; j < matrixSize; j++) {
-            for (int k = 0; k < matrixSize; k++) {
-                thatColumn[k] = matrixB[k][j];
-            }
-
-            for (int i = 0; i < matrixSize; i++) {
-                int thisRow[] = matrixA[i];
-                int summand = 0;
-                for (int k = 0; k < matrixSize; k++) {
-                    summand += thisRow[k] * thatColumn[k];
-                }
-                matrixC[i][j] = summand;
-            }
+        for (int i = 0; i < matrixSize; i++) {
+            multiplyMatrix(matrixA, matrixB, matrixSize, matrixC, i);
         }
+
         return matrixC;
+    }
+
+    private static void multiplyMatrix(int[][] matrixA, int[][] matrixB, int matrixSize, int[][] matrixC, int row) {
+        int thatColumn[] = new int[matrixB.length];
+        for (int k = 0; k < matrixSize; k++) {
+            thatColumn[k] = matrixB[k][row];
+        }
+
+        for (int i = 0; i < matrixSize; i++) {
+            int thisRow[] = matrixA[i];
+            int summand = 0;
+            for (int k = 0; k < matrixSize; k++) {
+                summand += thisRow[k] * thatColumn[k];
+            }
+            matrixC[i][row] = summand;
+        }
     }
 
     public static int[][] create(int size) {

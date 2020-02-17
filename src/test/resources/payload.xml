@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) 2020 FORS Development Center
+  ~ Trifonovskiy tup. 3, Moscow, 129272, Russian Federation
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of
+  ~ FORS Development Center ("Confidential Information"). You shall not
+  ~ disclose such Confidential Information and shall use it only in
+  ~ accordance with the terms of the license agreement you entered into
+  ~ with FORS.
+  -->
+
+<Payload xmlns="http://javaops.ru"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://javaops.ru payload.xsd">
+    <Users>
+        <User flag="active" city="kiv">
+            <email>gmail@gmail.com</email>
+            <fullName>Full Name</fullName>
+        </User>
+        <User flag="superuser" city="spb">
+            <email>admin@javaops.ru</email>
+            <fullName>Admin</fullName>
+        </User>
+        <User flag="deleted" city="spb">
+            <email>mail@yandex.ru</email>
+            <fullName>Deleted</fullName>
+        </User>
+    </Users>
+    <Cities>
+        <City id="spb">Санкт-Петербург</City>
+        <City id="kiv">Киев</City>
+        <City id="mnsk">Минск</City>
+    </Cities>
+</Payload>

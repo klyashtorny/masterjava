@@ -14,16 +14,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://javaops.ru payload.xsd">
     <Users>
-        <User flag="active" city="kiv">
-            <email>gmail@gmail.com</email>
+        <User id="full" flag="active" city="kiv" email="gmail@gmail.com">
             <fullName>Full Name</fullName>
         </User>
-        <User flag="superuser" city="spb">
-            <email>admin@javaops.ru</email>
+        <User id = "admin" flag="superuser" city="spb" email="admin@javaops.ru">
             <fullName>Admin</fullName>
         </User>
-        <User flag="deleted" city="spb">
-            <email>mail@yandex.ru</email>
+        <User id="del" flag="deleted" city="spb" email="mail@yandex.ru">
             <fullName>Deleted</fullName>
         </User>
     </Users>
@@ -32,4 +29,38 @@
         <City id="kiv">Киев</City>
         <City id="mnsk">Минск</City>
     </Cities>
+    <Projects>
+        <Project>
+            <name>topjava</name>
+            <description>онлайн проект</description>
+            <Group user="admin">
+                <name>topjava01</name>
+                <type>REGISTERING</type>
+            </Group>
+            <Group user="admin">
+                <name>topjava02</name>
+                <type>CURRENT</type>
+            </Group>
+            <Group user="del">
+                <name>topjava03</name>
+                <type>FINISHED</type>
+            </Group>
+        </Project>
+        <Project>
+            <name>masterjava</name>
+            <description>онлайн проект</description>
+            <Group user="admin">
+                <name>masterjava01</name>
+                <type>REGISTERING</type>
+            </Group>
+            <Group user="del">
+                <name>masterjava02</name>
+                <type>CURRENT</type>
+            </Group>
+            <Group user="full">
+                <name>masterjava03</name>
+                <type>FINISHED</type>
+            </Group>
+        </Project>
+    </Projects>
 </Payload>

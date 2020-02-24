@@ -1,5 +1,17 @@
 
-package ru.javaops.masterjava.xml.schema;
+/*
+ * Copyright (c) 2020 FORS Development Center
+ * Trifonovskiy tup. 3, Moscow, 129272, Russian Federation
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of
+ * FORS Development Center ("Confidential Information"). You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with FORS.
+ */
+
+package temp;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
@@ -10,7 +22,7 @@ import javax.xml.namespace.QName;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the schema package. 
+ * generated in the ru.javaops.masterjava.xml.schema package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -27,7 +39,7 @@ public class ObjectFactory {
     private final static QName _City_QNAME = new QName("http://javaops.ru", "City");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: schema
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ru.javaops.masterjava.xml.schema
      * 
      */
     public ObjectFactory() {
@@ -39,22 +51,6 @@ public class ObjectFactory {
      */
     public Payload createPayload() {
         return new Payload();
-    }
-
-    /**
-     * Create an instance of {@link Project }
-     * 
-     */
-    public Project createProject() {
-        return new Project();
-    }
-
-    /**
-     * Create an instance of {@link Group }
-     * 
-     */
-    public Group createGroup() {
-        return new Group();
     }
 
     /**
@@ -79,14 +75,6 @@ public class ObjectFactory {
      */
     public Payload.Users createPayloadUsers() {
         return new Payload.Users();
-    }
-
-    /**
-     * Create an instance of {@link Payload.Projects }
-     * 
-     */
-    public Payload.Projects createPayloadProjects() {
-        return new Payload.Projects();
     }
 
     /**

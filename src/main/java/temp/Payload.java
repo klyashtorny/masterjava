@@ -1,5 +1,17 @@
 
-package ru.javaops.masterjava.xml.schema;
+/*
+ * Copyright (c) 2020 FORS Development Center
+ * Trifonovskiy tup. 3, Moscow, 129272, Russian Federation
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of
+ * FORS Development Center ("Confidential Information"). You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with FORS.
+ */
+
+package temp;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -42,17 +54,6 @@ import java.util.List;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
- *         &lt;element name="Projects">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence maxOccurs="unbounded" minOccurs="0">
- *                   &lt;element ref="{http://javaops.ru}Project"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
  *       &lt;/all>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -72,8 +73,6 @@ public class Payload {
     protected Payload.Cities cities;
     @XmlElement(name = "Users", namespace = "http://javaops.ru", required = true)
     protected Payload.Users users;
-    @XmlElement(name = "Projects", namespace = "http://javaops.ru", required = true)
-    protected Payload.Projects projects;
 
     /**
      * Gets the value of the cities property.
@@ -121,30 +120,6 @@ public class Payload {
      */
     public void setUsers(Payload.Users value) {
         this.users = value;
-    }
-
-    /**
-     * Gets the value of the projects property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Payload.Projects }
-     *     
-     */
-    public Payload.Projects getProjects() {
-        return projects;
-    }
-
-    /**
-     * Sets the value of the projects property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Payload.Projects }
-     *     
-     */
-    public void setProjects(Payload.Projects value) {
-        this.projects = value;
     }
 
 
@@ -203,66 +178,6 @@ public class Payload {
                 city = new ArrayList<CityType>();
             }
             return this.city;
-        }
-
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence maxOccurs="unbounded" minOccurs="0">
-     *         &lt;element ref="{http://javaops.ru}Project"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "project"
-    })
-    public static class Projects {
-
-        @XmlElement(name = "Project", namespace = "http://javaops.ru")
-        protected List<Project> project;
-
-        /**
-         * Gets the value of the project property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the project property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getProject().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Project }
-         * 
-         * 
-         */
-        public List<Project> getProject() {
-            if (project == null) {
-                project = new ArrayList<Project>();
-            }
-            return this.project;
         }
 
     }

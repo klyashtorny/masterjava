@@ -1,5 +1,6 @@
 package ru.javaops.masterjava.xml.util;
 
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -10,13 +11,19 @@ public class StaxStreamProcessor implements AutoCloseable {
     private static final XMLInputFactory FACTORY = XMLInputFactory.newInstance();
 
     private final XMLStreamReader reader;
+    private final XMLEventReader eventReader;
 
     public StaxStreamProcessor(InputStream is) throws XMLStreamException {
         reader = FACTORY.createXMLStreamReader(is);
+        eventReader = FACTORY.createXMLEventReader(is);
     }
 
     public XMLStreamReader getReader() {
         return reader;
+    }
+
+    public XMLEventReader getEventReader() {
+        return eventReader;
     }
 
     public boolean doUntil(int stopEvent, String value) throws XMLStreamException {

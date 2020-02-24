@@ -43,4 +43,8 @@ public class Main {
             System.out.println(group.getName()+ " " + group.getType());
         });
     }
+
+    private void parseStax(String name) {
+
+    }
 }

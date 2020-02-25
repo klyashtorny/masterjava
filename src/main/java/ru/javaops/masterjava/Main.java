@@ -6,9 +6,12 @@ import ru.javaops.masterjava.xml.schema.ObjectFactory;
 import ru.javaops.masterjava.xml.schema.Payload;
 import ru.javaops.masterjava.xml.schema.Payload.Projects;
 import ru.javaops.masterjava.xml.schema.Project;
+import ru.javaops.masterjava.xml.schema.User;
 import ru.javaops.masterjava.xml.util.JaxbParser;
 import ru.javaops.masterjava.xml.util.Schemas;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +33,10 @@ public class Main {
     public static void main(String[] args) throws Exception{
         String projectName = args[0];
 
+        parseUseJAXB(projectName);
+    }
+
+    private static void parseUseJAXB(String projectName) throws javax.xml.bind.JAXBException, IOException {
         Payload payload = JAXB_PARSER.unmarshal(
                 Resources.getResource("payload.xml").openStream());
 
@@ -38,13 +45,19 @@ public class Main {
                 projectName.equals(project.getName())).collect(Collectors.toList());
         Project project = topjavaList.get(0);
         List<Group> groupList = project.getGroup();
+
+        List<User> userList = new ArrayList<>();
+
+        groupList = groupList.stream().map(group -> {
+            User user = (User) group.getUser();
+            userList.add(user);
+            return group;
+        }).collect(Collectors.toList());
+
         System.out.println("Project " + projectName);
-        groupList.stream().sorted(Comparator.comparing(Group::getName)).forEach(group -> {
-            System.out.println(group.getName()+ " " + group.getType());
+        userList.stream().sorted(Comparator.comparing(User::getFullName)).forEach(user -> {
+            System.out.println(user.getFullName()+ " " + user.getEmail());
         });
     }
 
-    private void parseStax(String name) {
-
-    }
 }

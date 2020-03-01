@@ -4,12 +4,9 @@ import com.google.common.io.Resources;
 import org.junit.Test;
 import ru.javaops.masterjava.xml.schema.User;
 
-import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class StaxStreamProcessorTest {
@@ -33,39 +30,26 @@ public class StaxStreamProcessorTest {
     public void readUsers() throws Exception {
         try (StaxStreamProcessor processor =
                      new StaxStreamProcessor(Resources.getResource("payload.xml").openStream())) {
-            XMLEventReader eventReader = processor.getEventReader();
-
             User user = null;
             List<User> userList = new ArrayList<>();
 
-            while (eventReader.hasNext()) {
-                XMLEvent event = (XMLEvent) eventReader.next();
-                if (event.isStartElement()) {
-                    String localPart = event.asStartElement().getName().getLocalPart();
-                    if ("User".equals(localPart)) {
-                        user = new User();
-                    }
-                    if ("fullName".equals(localPart)) {
-                        user.setFullName(eventReader.getElementText());
-                    }
-                    if ("User".equals(localPart)) {
-                        Iterator<Attribute> attribue = event.asStartElement().getAttributes();
-                        while (attribue.hasNext()) {
-                            Attribute myAttribute = attribue.next();
-                            if ("email".equals(myAttribute.getName().toString())) {
-                                user.setEmail(myAttribute.getValue());
-                            }
-                        }
-                    }
-                }
-                if (event.isEndElement()) {
-                    String localPart = event.asEndElement().getName().getLocalPart();
-                    if ("User".equals(localPart)) {
-                        userList.add(user);
+            while (processor.startElement("User", "Users")) {
+                //System.out.println(processor.getAttribute("email") + processor.getElementValue("fullName"));
+                user = new User();
+                user.setEmail(processor.getAttribute("email"));
+                user.setFullName(processor.getElementValue("fullName"));
+                userList.add(user);
+            }
+
+            while (processor.startElement("Project", "Projects")) {
+                if ("topjava".equals(processor.getElementValue("name"))) {
+                    while (processor.startElement("Group", "Project")) {
+                        System.out.println(processor.getAttribute("user"));
                     }
                 }
             }
-            userList.forEach(user1 -> System.out.println(user1.getFullName() + "/" + user1.getEmail()));
+
+            userList.forEach(userOut -> System.out.println(userOut.getFullName() + "/" + userOut.getEmail()));
         }
     }
 

@@ -10,22 +10,22 @@ import java.io.Reader;
 import java.io.StringReader;
 
 public class JaxbUnmarshaller {
-    private Unmarshaller unmarshaller;
+    private final ThreadLocal<Unmarshaller> unmarshaller = new ThreadLocal<>();
 
     public JaxbUnmarshaller(JAXBContext ctx) throws JAXBException {
-        unmarshaller = ctx.createUnmarshaller();
+        unmarshaller.set(ctx.createUnmarshaller());
     }
 
     public synchronized void setSchema(Schema schema) {
-        unmarshaller.setSchema(schema);
+        unmarshaller.get().setSchema(schema);
     }
 
     public synchronized Object unmarshal(InputStream is) throws JAXBException {
-        return unmarshaller.unmarshal(is);
+        return unmarshaller.get().unmarshal(is);
     }
 
     public synchronized Object unmarshal(Reader reader) throws JAXBException {
-        return unmarshaller.unmarshal(reader);
+        return unmarshaller.get().unmarshal(reader);
     }
 
     public Object unmarshal(String str) throws JAXBException {
@@ -33,6 +33,6 @@ public class JaxbUnmarshaller {
     }
 
     public synchronized <T> T unmarshal(XMLStreamReader reader, Class<T> elementClass) throws JAXBException {
-        return unmarshaller.unmarshal(reader, elementClass).getValue();
+        return unmarshaller.get().unmarshal(reader, elementClass).getValue();
     }
 }

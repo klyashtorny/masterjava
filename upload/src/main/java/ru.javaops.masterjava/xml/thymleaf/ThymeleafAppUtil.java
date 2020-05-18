@@ -14,6 +14,7 @@ public class ThymeleafAppUtil {
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
         templateResolver.setTemplateMode("XHTML");
         templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setCharacterEncoding("UTF8");
         templateResolver.setSuffix(".html");
         templateResolver.setCacheTTLMs(3600000L);
         templateEngine = new TemplateEngine();

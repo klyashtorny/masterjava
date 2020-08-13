@@ -1,4 +1,4 @@
-<head>
+<head xmlns:th="http://www.w3.org/1999/xhtml">
     <meta charset="UTF-8">
     <title>Upload XML</title>
 </head>
@@ -6,11 +6,16 @@
 <form action="" method="post" enctype="multipart/form-data">
     <h3>Select xml file to upload</h3>
     <p>
+    Chunk size <input class="form-control" required type="number" id="chunk" name="chunk"/>
+    </p>
+
+    <p>
         <input type="file" name="fileToUpload" id="fileToUpload"><br/>
     </p>
     <p>
         <input type="submit" value="Upload" name="submit">
     </p>
 </form>
+<a th:href="@{/users?limit=20}"> Show first 20 users</a>
 </body>
 </html>

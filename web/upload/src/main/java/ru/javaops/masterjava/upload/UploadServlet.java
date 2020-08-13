@@ -37,11 +37,16 @@ public class UploadServlet extends HttpServlet {
         try {
 //            http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
             Part filePart = req.getPart("fileToUpload");
+            String chunk = req.getParameter("chunk");
+            if (Integer.valueOf(chunk) < 0 ) {
+                throw new Exception("Chunk size must be > 0");
+            }
+
             if (filePart.getSize() == 0) {
                 throw new IllegalStateException("Upload file have not been selected");
             }
             try (InputStream is = filePart.getInputStream()) {
-                List<User> users = userProcessor.process(is);
+                List<User> users = userProcessor.process(is, chunk);
                 webContext.setVariable("users", users);
                 engine.process("result", webContext, resp.getWriter());
             }

@@ -26,6 +26,12 @@ public class UserTestData {
         USER1 = new User("User1", "user1@gmail.com", UserFlag.active, MOSCOW);
         USER2 = new User("User2", "user2@yandex.ru", UserFlag.active, KIEV);
         USER3 = new User("User3", "user3@yandex.ru", UserFlag.active, MINSK);
+        ADMIN.setShortName(SPB.getShortName());
+        DELETED.setShortName(SPB.getShortName());
+        FULL_NAME.setShortName(KIEV.getShortName());
+        USER1.setShortName(MOSCOW.getShortName());
+        USER2.setShortName(KIEV.getShortName());
+        USER3.setShortName(MINSK.getShortName());
         FIST5_USERS.addAll(Arrays.asList(ADMIN, DELETED, FULL_NAME, USER1, USER2));
     }
 

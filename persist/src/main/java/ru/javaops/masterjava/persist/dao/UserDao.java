@@ -4,9 +4,12 @@ import com.bertoncelj.jdbi.entitymapper.EntityMapperFactory;
 import one.util.streamex.IntStreamEx;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.BatchChunkSize;
+import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapperFactory;
 import ru.javaops.masterjava.persist.DBIProvider;
+import ru.javaops.masterjava.persist.model.City;
 import ru.javaops.masterjava.persist.model.User;
+import ru.javaops.masterjava.persist.model.mapper.UserMapper;
 
 import java.util.List;
 
@@ -15,7 +18,7 @@ public abstract class UserDao implements AbstractDao {
 
     public User insert(User user) {
         if (user.isNew()) {
-            int id = insertGeneratedId(user);
+            int id = insertGeneratedId(user, user.getCity());
             user.setId(id);
         } else {
             insertWitId(user);
@@ -33,14 +36,16 @@ public abstract class UserDao implements AbstractDao {
         return id;
     }
 
-    @SqlUpdate("INSERT INTO users (full_name, email, flag) VALUES (:fullName, :email, CAST(:flag AS USER_FLAG)) ")
+    @SqlUpdate("INSERT INTO users (full_name, email, flag, city_fk) VALUES (:fullName, :email, CAST(:flag AS USER_FLAG), (SELECT id FROM cities WHERE short_name = :shortName))")
     @GetGeneratedKeys
-    abstract int insertGeneratedId(@BindBean User user);
+    abstract int insertGeneratedId(@BindBean User user, @BindBean City city);
 
-    @SqlUpdate("INSERT INTO users (id, full_name, email, flag) VALUES (:id, :fullName, :email, CAST(:flag AS USER_FLAG)) ")
+
+    @SqlUpdate("INSERT INTO users (id, full_name, email, flag, city_fk) VALUES (:id, :fullName, :email, CAST(:flag AS USER_FLAG)), :city.id")
     abstract void insertWitId(@BindBean User user);
 
-    @SqlQuery("SELECT * FROM users ORDER BY full_name, email LIMIT :it")
+    @SqlQuery("SELECT * FROM users left join cities on users.city_fk = cities.id  ORDER BY full_name, email LIMIT :it")
+    @Mapper(UserMapper.class)
     public abstract List<User> getWithLimit(@Bind int limit);
 
     //   http://stackoverflow.com/questions/13223820/postgresql-delete-all-content
@@ -49,9 +54,10 @@ public abstract class UserDao implements AbstractDao {
     public abstract void clean();
 
     //    https://habrahabr.ru/post/264281/
-    @SqlBatch("INSERT INTO users (id, full_name, email, flag) VALUES (:id, :fullName, :email, CAST(:flag AS USER_FLAG))" +
+    @SqlBatch("INSERT INTO users (id, full_name, email, flag, city_fk) VALUES (:id, :fullName, :email, CAST(:flag AS USER_FLAG), (SELECT id FROM cities WHERE short_name = :shortName))" +
             "ON CONFLICT DO NOTHING")
 //            "ON CONFLICT (email) DO UPDATE SET full_name=:fullName, flag=CAST(:flag AS USER_FLAG)")
+    @Mapper(UserMapper.class)
     public abstract int[] insertBatch(@BindBean List<User> users, @BatchChunkSize int chunkSize);
 
 

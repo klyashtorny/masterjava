@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.javaops.masterjava.persist.CityTestData;
 import ru.javaops.masterjava.persist.UserTestData;
 import ru.javaops.masterjava.persist.model.User;
 
@@ -19,11 +20,13 @@ public class UserDaoTest extends AbstractDaoTest<UserDao> {
 
     @BeforeClass
     public static void init() throws Exception {
+        CityDaoTest.init();
         UserTestData.init();
     }
 
     @Before
     public void setUp() throws Exception {
+        CityTestData.setUp();
         UserTestData.setUp();
     }
 
@@ -36,7 +39,7 @@ public class UserDaoTest extends AbstractDaoTest<UserDao> {
     @Test
     public void insertBatch() throws Exception {
         dao.clean();
-        dao.insertBatch(FIST5_USERS, 3);
+        //dao.insertBatch(FIST5_USERS, 3);
         Assert.assertEquals(5, dao.getWithLimit(100).size());
     }
 

@@ -1,5 +1,7 @@
 package ru.javaops.masterjava.service.mail;
 
+import ru.javaops.masterjava.service.model.MailResult;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -7,7 +9,6 @@ import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class MailServiceExecutor {
-    private static final String OK = "OK";
 
     private static final String INTERRUPTED_BY_FAULTS_NUMBER = "+++ Interrupted by faults number";
     private static final String INTERRUPTED_BY_TIMEOUT = "+++ Interrupted by timeout";
@@ -91,33 +92,6 @@ public class MailServiceExecutor {
             return null;
         }
         return Math.random() < 0.7 ? MailResult.ok(email) : MailResult.error(email, "Error");
-    }
-
-    public static class MailResult {
-        private final String email;
-        private final String result;
-
-        private static MailResult ok(String email) {
-            return new MailResult(email, OK);
-        }
-
-        private static MailResult error(String email, String error) {
-            return new MailResult(email, error);
-        }
-
-        public boolean isOk() {
-            return OK.equals(result);
-        }
-
-        private MailResult(String email, String cause) {
-            this.email = email;
-            this.result = cause;
-        }
-
-        @Override
-        public String toString() {
-            return '(' + email + ',' + result + ')';
-        }
     }
 
     public static class GroupResult {

@@ -5,6 +5,8 @@ import ru.javaops.web.WebStateException;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlMimeType;
+import java.util.List;
 import java.util.Set;
 
 @WebService(targetNamespace = "http://mail.javaops.ru/")
@@ -19,12 +21,16 @@ public interface MailService {
             @WebParam(name = "to") Set<Addressee> to,
             @WebParam(name = "cc") Set<Addressee> cc,
             @WebParam(name = "subject") String subject,
-            @WebParam(name = "body") String body) throws WebStateException;
+            @WebParam(name = "body") String body,
+            @XmlMimeType("application/octet-stream") List<SoapFile> soapFiles
+            ) throws WebStateException;
 
     @WebMethod
     GroupResult sendBulk(
             @WebParam(name = "to") Set<Addressee> to,
             @WebParam(name = "subject") String subject,
-            @WebParam(name = "body") String body) throws WebStateException;
+            @WebParam(name = "body") String body,
+            @XmlMimeType("application/octet-stream") List<SoapFile> soapFiles
+            ) throws WebStateException;
 
 }

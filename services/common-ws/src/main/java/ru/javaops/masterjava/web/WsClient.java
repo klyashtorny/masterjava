@@ -59,4 +59,12 @@ public class WsClient<T> {
     public static WebStateException getWebStateException(Throwable t, ExceptionType type) {
         return (t instanceof WebStateException) ? (WebStateException) t : new WebStateException(t, type);
     }
+
+    public String getUser(String user) {
+        return HOSTS.getString(user);
+    }
+
+    public String getPassword(String password) {
+        return HOSTS.getString(password);
+    }
 }

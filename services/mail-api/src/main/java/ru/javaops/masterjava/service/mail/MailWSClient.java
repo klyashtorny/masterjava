@@ -10,6 +10,7 @@ import ru.javaops.masterjava.web.AuthUtil;
 import ru.javaops.masterjava.web.WebStateException;
 import ru.javaops.masterjava.web.WsClient;
 import ru.javaops.masterjava.web.handler.SoapLoggingHandlers;
+import ru.javaops.masterjava.web.handler.SoapStatisticHandler;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.soap.MTOMFeature;
@@ -19,18 +20,23 @@ import java.util.Set;
 @Slf4j
 public class MailWSClient {
     private static final WsClient<MailService> WS_CLIENT;
-    public static final String USER = "user";
-    public static final String PASSWORD = "password";
+    public static final String USER;
+    public static final String PASSWORD;
     private static final SoapLoggingHandlers.ClientHandler LOGGING_HANDLER = new SoapLoggingHandlers.ClientHandler(Level.DEBUG);
+    private static final SoapStatisticHandler STATISTIC_HANDLER = new SoapStatisticHandler(Level.ERROR);
+    private static final SoapServerSecurityHandler SECURITY_HANDLER = new SoapServerSecurityHandler();
 
-    public static String AUTH_HEADER = AuthUtil.encodeBasicAuthHeader(USER, PASSWORD);
+    public static String AUTH_HEADER;
 
     static {
         WS_CLIENT = new WsClient<>(Resources.getResource("wsdl/mailService.wsdl"),
                 new QName("http://mail.javaops.ru/", "MailServiceImplService"),
                 MailService.class);
 
-        WS_CLIENT.init("mail", "/mail/mailService?wsdl");
+        WS_CLIENT.init("mail.endpoint", "/mail/mailService?wsdl");
+        USER = WS_CLIENT.getUser("mail.user");
+        PASSWORD = WS_CLIENT.getPassword("mail.password");
+        AUTH_HEADER = AuthUtil.encodeBasicAuthHeader(USER, PASSWORD);
     }
 
 
@@ -52,6 +58,9 @@ public class MailWSClient {
         MailService port = WS_CLIENT.getPort(new MTOMFeature(1024));
         WsClient.setAuth(port, USER, PASSWORD);
         WsClient.setHandler(port, LOGGING_HANDLER);
+        STATISTIC_HANDLER.setStartTime(System.currentTimeMillis());
+        WsClient.setHandler(port, STATISTIC_HANDLER);
+        WsClient.setHandler(port, SECURITY_HANDLER);
         return port;
     }
 
